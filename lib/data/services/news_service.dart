@@ -12,30 +12,29 @@ class NewsAPIService {
     String requestUrl = "$baseUrl/v2/everything?q=bitcoin&apiKey=$apiKey";
 
     try{
+      //Making request
       var response = await http.get(Uri.parse(requestUrl));
 
+      //Check if response is status 200
       if (response.statusCode == 200) {
+        // print(response.body);
         var decodedJson = jsonDecode(response.body);
         if (decodedJson["status"] == "ok") {
-          print(decodedJson);
+          // print(decodedJson);
           var articlesJsonList = decodedJson["articles"] as List;
           var articleModels = articlesJsonList
               .map(
-                (articleJson) => Article(
-              title: articleJson["title"],
-              description: articleJson["description"],
-              imageUrl: articleJson["urlToImage"],
-              publishedAt: DateTime.parse(articleJson["publishedAt"]),
-              sourceName: articleJson["source"]['name'],
-            ),
+                (articleJson) => Article.fromMap(articleJson),
           )
               .toList();
           return articleModels;
         } else {
           throw Exception();
+
         }
         //TODO:Parse body json and return
-      } else {
+      }
+      else {
         throw Exception();
       }
     }
@@ -45,5 +44,9 @@ class NewsAPIService {
     }
 
 
+  }
+
+  Future<Article> fetchDetailOfArticle(){
+    throw UnimplementedError();
   }
 }

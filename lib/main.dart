@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:prj3_news_app/data/services/news_service.dart';
+import 'package:prj3_news_app/presentation/screens/news_feed_screen.dart';
+import 'package:provider/provider.dart';
 
-import 'screens/splash_screen.dart';
 
 void main(){
   runApp(App());
@@ -17,7 +19,11 @@ class App extends StatelessWidget {
         primaryColor: Colors.blueAccent,
       ),
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: MultiProvider(providers: [
+        Provider<NewsAPIService>(
+          create: (ctx) => NewsAPIService(),
+        ),
+      ], child: NewsFeedScreen()),
     );
   }
 }
